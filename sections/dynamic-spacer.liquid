@@ -1,0 +1,50 @@
+<div class="section-{{ section.id }}"></div>
+
+<style>
+  .section-{{ section.id }}{
+  	width: 100%; 
+    height:{{ section.settings.height }}px;
+  }
+  
+  @media screen and (max-width: 640px){
+  	 .section-{{ section.id }}{
+       height: {{ section.settings.spheight }}px;
+     }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Spacer",
+  "class": "spacer",
+  "settings": [
+    {
+          "type": "range",
+          "id": "height",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "height",
+          "default": 40
+    	},
+		{
+          "type": "range",
+          "id": "spheight",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "label": "sp-height",
+          "default": 40
+    	}
+  ],
+  "presets": [
+    {
+      "category": "Advanced",
+      "name": "スペーサー",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

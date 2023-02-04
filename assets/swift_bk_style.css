@@ -1,0 +1,20 @@
+.account-order-history .account-page-subtitle{
+  color: #239604;
+  margin-top:20px;
+}
+.p-subscription_text {
+    margin-top: 80px;
+    font-size: 24px;
+    color: #239604;
+}
+.account-order-history .account-page-subtitle{
+    font-size: 24px;
+}
+
+.account-info-item a {
+    color: #333!important;
+}
+
+.account-address-item a {
+    color: #333!important;
+}

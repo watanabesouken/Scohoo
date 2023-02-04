@@ -1,0 +1,133 @@
+{% if section.settings.image %}
+{% assign image = section.settings.image %}
+
+<{{ section.settings.tag }} class="banner {% unless section.settings.mobileImage %}noMobileImage{% endunless %} banner--pc">
+		{%
+          render 'rimg'
+          img: image,
+          alt: alt,
+          size: {{ section.settings.width }}x,
+          lazy: true,
+          crop: crop,
+          class: 'banner__image'
+        %}
+</{{ section.settings.tag }}>
+
+{% endif %}
+
+
+{% if section.settings.mobileImage %}
+{% assign mobileImage = section.settings.mobileImage %}
+
+<{{ section.settings.tag }} class="banner banner--sp">
+		{%
+          render 'rimg'
+          img:mobileImage,
+          alt: alt,
+          size:100vw,
+          lazy: true,
+          crop: crop,
+          class: 'banner__image'
+        %}
+</{{ section.settings.tag }}>
+
+{% endif %}
+
+
+<style>
+  .banner__image{
+	max-width: {{ section.settings.width }}px;
+	height: auto;
+}
+</style>
+
+
+
+{% schema %}
+  {
+    "name": "banner",
+	"class": "banner--section",
+    "settings": [
+		{
+          "id": "image",
+          "type": "image_picker",
+          "label": "Image"
+        },
+		{
+          "id": "mobileImage",
+          "type": "image_picker",
+          "label": "mobile Image"
+        },
+		{
+			"id": "width",
+          	"type": "range",
+            "min": 400,
+            "max": 1600,
+            "step": 100,
+            "label": "width",
+            "default": 1600
+        },
+		{
+		"id": "tag",
+		"type": "select",
+      	"label": "tag",
+      	"options": [
+        {
+          "value": "div",
+          "label": "div"
+        },
+        {
+          "value": "h2",
+          "label": "h2"
+        },
+        {
+          "value": "h3",
+          "label": "h3"
+        },
+        {
+          "value": "h4",
+          "label": "h4"
+        }
+      ],
+      "default": "div"
+    }
+],
+"presets": [
+    {
+      "name": "banner",
+      "category": "image"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+ .banner{
+  	width: 100%;
+  }
+  .banner__image{
+  	max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+  
+      .banner--sp{
+    	display:none;
+    }
+  
+  @media(max-width:720px){
+  	.banner__image{
+    	width:  100%;
+  	}
+    
+    .banner--sp{
+    	display:block;
+    }
+    
+    .banner--pc:not(.noMobileImage){
+    	display:none;
+    }
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

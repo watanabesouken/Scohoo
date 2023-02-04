@@ -1,0 +1,334 @@
+<style>
+ .questioner {
+   margin-bottom: 3em;
+ }  
+.malin-q {
+	max-width: 50%;
+	margin: 0 auto;
+}
+.malin-q-item {
+ padding-bottom: 1em;
+   padding-top: 1em;
+}
+.malin-q-label,
+.malin-q-input {
+	padding: 10px;
+}
+.malin-q-label {
+ background-color: {{ section.settings.malin_q_bkcolor }}
+}
+.malin-q-input {
+	width: 100%;
+	font-size: 16px;
+	border: solid 1px #333 ;
+	border-radius: 4px;
+}
+.malin-q-input:focus-visible {
+	outline: green auto 1px;
+}
+.malin-q-required {
+  font-size: 10px;
+	color: #fff ;
+	background-color: #e30606 ;
+	border-radius: 50pxpx;
+	padding: 5px 5px;
+	margin: 0 0 0 18px;
+}
+textarea.malin-q-input {
+	height: 160px;
+}
+ .malin-q-select {
+   width: 50%;
+   padding: 2em;
+ }
+ 
+.malin-q-submit {
+	text-align: center;
+}
+.malin-q-submit button {
+	font-size: 18px;
+	font-weight: bold;
+	color: #fff ;
+   background-color: {{ section.settings.malin_q_btncolor}};
+	border: solid 1px {{ section.settings.malin_q_btnbordercolor }};
+	border-radius: 4px;
+	padding: 5px 32px;
+	transition: 0.4s;
+	cursor: pointer;
+}
+.malin-q-submit button:hover {
+	opacity: 0.8;
+}
+
+
+</style>
+
+<div class="questioner">
+ <h2 class="center">{{ section.settings.malin_q_h2 }}</h2>
+ <p class="center" style="text-align: center; margin: 40px auto">{{ section.settings.malin_q_lead }}</p>
+
+<form class="malin-q" 
+     action="{{ section.settings.malin_q_action }}" 
+     method="POST"
+     target="hidden_iframe"
+   onsubmit="submitted=true;"
+     >
+ 
+   {%- for block in section.blocks -%}
+    {%- case block.type -%}
+       {%- when 'q_txt' -%}
+	<div class="malin-q-item">
+		<p class="malin-q-label">{{ block.settings.malin_q_label }}{% if block.settings.malin_q_require %}<span class="malin-q-required">必須</span>{% endif %}</p>
+
+     <input
+            name="{{ block.settings.malin_q_name }}"
+			class="malin-q-input"
+			placeholder="{{ block.settings.malin_q_placeholder }}"
+			type="text"
+			{% if block.settings.malin_q_require %}required="required"{% endif %}
+		/>
+	</div>
+ 
+   {%- when 'q_txt2' -%}
+	<div class="malin-q-item">
+		<p class="malin-q-label">{{ block.settings.malin_q_label }}{% if block.settings.malin_q_require %}<span class="malin-q-required">必須</span>{% endif %}</p>
+
+		<textarea
+           name="{{ block.settings.malin_q_name }}"
+			class="malin-q-input"
+			placeholder="{{ block.settings.malin_q_placeholder }}"
+            {% if block.settings.malin_q_require %}required="required"{% endif %}
+		></textarea>
+	</div>
+ 
+
+ 
+        {%- endcase -%}
+ {%- endfor -%}
+ 
+	<div class="malin-q-submit">
+		<button type="submit">{{ section.settings.malin_q_btn }}</button>
+	</div>
+</form>
+</div>
+ 
+<script type="text/javascript">
+   let submitted = false;
+</script>
+<iframe
+   name="hidden_iframe"
+   id="hidden_iframe"
+   style="display: none"
+   onload="if(submitted){window.location='https://malimoron.shop/';}"
+></iframe>
+
+{% schema %}
+{
+ "name": "アンケート",
+ "tag": "section",
+ "class": "spaced-section spaced-section--full-width",
+ "settings": [
+     {
+          "id": "malin_q_action",
+          "type": "text",
+          "label": "フォームURL"
+     },
+     {
+          "id": "malin_q_h2",
+          "type": "html",
+          "label": "見出し"
+     },
+     {
+          "id": "malin_q_lead",
+          "type": "html",
+          "label": "説明文"
+     },
+     {
+          "id": "malin_q_btn",
+          "type": "html",
+          "label": "ボタンテキスト",
+		   "default": "送信する"
+     },
+      {
+            "type": "paragraph",
+            "content": "-------カラー-------"
+      },
+	   {
+           "type": "color",
+           "id": "malin_q_bkcolor",
+           "label": "小見出し背景カラー",
+           "default": "#dcdcdc "
+      },
+	   {
+           "type": "color",
+           "id": "malin_q_btncolor",
+           "label": "ボタン背景カラー",
+           "default": "#000"
+      },
+	   {
+           "type": "color",
+           "id": "malin_q_btnbordercolor",
+           "label": "ボタン枠カラー",
+           "default": "#000"
+      }
+ ],
+ "blocks": [
+    {
+      "type": "q_txt",
+      "name": "単一テキスト",
+        "settings": [
+        {
+             "id": "malin_q_label",
+             "type": "text",
+             "label": "ラベル"
+        },
+        {
+             "id": "malin_q_name",
+             "type": "text",
+             "label": "nameを入れてください",
+			  "info": "例）entry.xxxxxxx"
+        },
+        {
+             "id": "malin_q_placeholder",
+             "type": "text",
+             "label": "インプットエリア説明",
+			  "info": "例）お名前を入れてください"
+        },
+        {
+             "type": "checkbox",
+             "id": "malin_q_require",
+             "default": false,
+             "label": "必須"
+        }
+      ]
+    },
+    {
+      "type": "q_txt2",
+      "name": "複数テキスト",
+        "settings": [
+        {
+             "id": "malin_q_label",
+             "type": "text",
+             "label": "ラベル"
+        },
+        {
+             "id": "malin_q_name",
+             "type": "text",
+             "label": "nameを入れてください",
+			  "info": "例）entry.xxxxxxx"
+        },
+        {
+             "id": "malin_q_placeholder",
+             "type": "html",
+             "label": "インプットエリア説明",
+			  "info": "例）お名前を入れてください"
+        },
+        {
+             "type": "checkbox",
+             "id": "malin_q_require",
+             "default": false,
+             "label": "必須"
+        }
+      ]
+    },
+    {
+      "type": "q_radio",
+      "name": "ラジオボタン",
+        "settings": [
+        {
+             "id": "malin_q_label",
+             "type": "text",
+             "label": "ラベル"
+        },
+        {
+             "id": "malin_q_name",
+             "type": "text",
+             "label": "nameを入れてください",
+			  "info": "例）entry.xxxxxxx"
+        },
+        {
+             "id": "malin_q_value",
+             "type": "html",
+             "label": "値を入れてください",
+			  "info": "複数ある場合はカンマ区切りで入れてください。（例）文言１,文言２・・・",
+		      "default": "男性,女性,その他"
+        },
+        {
+             "type": "checkbox",
+             "id": "malin_q_require",
+             "default": false,
+             "label": "必須"
+        }
+      ]
+    },
+    {
+      "type": "q_checkbox",
+      "name": "チェックボックス",
+        "settings": [
+        {
+             "id": "malin_q_label",
+             "type": "text",
+             "label": "ラベル"
+        },
+        {
+             "id": "malin_q_name",
+             "type": "text",
+             "label": "nameを入れてください",
+			  "info": "例）entry.xxxxxxx"
+        },
+        {
+             "id": "malin_q_value",
+             "type": "html",
+             "label": "値を入れてください",
+			  "info": "複数ある場合はカンマ区切りで入れてください。（例）文言１,文言２・・・",
+		      "default": "男性,女性,その他"
+        },
+        {
+             "type": "checkbox",
+             "id": "malin_q_require",
+             "default": false,
+             "label": "必須(ラベルのみ)",
+			  "info": "必須のラベルのみ表示され、空欄でも送信されます。"
+        }
+      ]
+    },
+    {
+      "type": "q_select",
+      "name": "プルダウン",
+        "settings": [
+        {
+             "id": "malin_q_label",
+             "type": "text",
+             "label": "ラベル"
+        },
+        {
+             "id": "malin_q_name",
+             "type": "text",
+             "label": "nameを入れてください",
+			  "info": "例）entry.xxxxxxx"
+        },
+        {
+             "id": "malin_q_value",
+             "type": "html",
+             "label": "値を入れてください",
+			  "info": "複数ある場合はカンマ区切りで入れてください。（例）文言１,文言２・・・",
+		      "default": "男性,女性,その他"
+        },
+        {
+             "type": "checkbox",
+             "id": "malin_q_require",
+             "default": false,
+             "label": "必須(ラベルのみ)",
+			  "info": "必須のラベルのみ表示され、空欄でも送信されます。"
+        }
+      ]
+    }
+
+ ],
+ "presets": [
+   {
+     "name": "アンケート"
+   }
+ ]
+}
+{% endschema %}

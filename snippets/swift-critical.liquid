@@ -1,0 +1,19 @@
+
+{% if template.name == "index" %}
+{% if swift_critical_type == "critical" %}
+<link rel="preload" href="{{ "swift-theme-critical.min.css" | asset_url }}" as="style">
+<link href="{{ "swift-theme-critical.min.css" | asset_url }}" rel="stylesheet" async="async" type="text/css" media="all" />
+{% else %}
+<script type="text/javascript">
+  window.addEventListener("load", (event) => {
+    var head  = document.getElementsByTagName("head")[0];
+    var link  = document.createElement("link");
+    link.rel  = "stylesheet";
+    link.type = "text/css";
+    link.href = "{{ "swift-theme-uncritical.min.css" | asset_url  }}";
+    link.media = "all";
+    head.appendChild(link);
+});
+</script>
+{% endif %}
+{% endif %}
